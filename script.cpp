@@ -10,14 +10,14 @@ bool check_git_status(const fs::path& dir) {
 
 	std::string cmd = "cd " + git_root + " && ";
 
-	std::string status_cmd = cmd + "git status --porcelain | grep . 2>&1 > /dev/null";
-	if (std::system(status_cmd.c_str())) {
+	std::string status_cmd = cmd + "git status --porcelain | grep . > /dev/null 2>&1";
+	if (!std::system(status_cmd.c_str())) {
 		std::cout << "   \033[1;97mrepository '" << git_root << "' has uncomitted/untracked files\033[0m" << std::endl;
 		result = true;
 	}
 
-	std::string push_cmd = cmd + "git log @{u}.. | grep . 2>&1 > /dev/null";
-	if (std::system(push_cmd.c_str())) {
+	std::string push_cmd = cmd + "git log @{u}.. | grep . > /dev/null 2>&1";
+	if (!std::system(push_cmd.c_str())) {
 		std::cout << "   \033[1;97mrepository '" << git_root << "' has unpushed commits\033[0m" << std::endl;
 		result = true;
 	}
